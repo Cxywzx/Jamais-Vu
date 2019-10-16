@@ -77,8 +77,6 @@ def fingerprint(channel_samples, Fs=DEFAULT_FS,
     # FFT the signal and extract frequency components
     channel_samples = channel_samples.astype("float32") # Import for the GPU
 
-
-
     t1 = time.time()
     # Reikna setup for Spectrogram generation
     api = any_api()
@@ -90,6 +88,9 @@ def fingerprint(channel_samples, Fs=DEFAULT_FS,
 
     arr2D = spectre_dev.get() ## Get spectrogram
     specttime = time.time()-t1
+
+    # 释放 GPU 资源。
+    thr.release()
 
     # Apply log transform since specgram() returns linear array
     t1 = time.time()
